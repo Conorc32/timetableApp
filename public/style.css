@@ -1,41 +1,4 @@
-.card {
-    width: 500px;
-    height: 850px;
-    margin: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-      0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    text-align: center;
-    font-family: "Open Sans", sans-serif;
-    font-size: 20px;
-    color: #fff;
-    background-color: #ceff89;
-    border-color: #212529;
-    border-radius: 10px;
-  }
-  /*Make Above Card responsive*/
-  @media only screen and (max-width: 600px) {
-    .card {
-      width: 95%;
-      
-    }
-  }
 
-  body {
-    background-color: #e66a6c;
-  }
-  h1 {
-    /* animation: flicker 1.5s infinite alternate; */
-    color:rgb(0, 0, 0);
-    font-family: "Open Sans", sans-serif;
-    font-size: 50px;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    
-  }
 
   @keyframes flicker {
     0%,
@@ -81,7 +44,7 @@ input[type="file"]{
   input[type="file"]:focus {
     border: 3px solid #555;
   }
-  
+
 /* download */
 
 button{
@@ -152,12 +115,12 @@ p{
     font-family: "Open Sans", sans-serif;
     font-size: 30px;
     color: #212529;
-    
+
     border-color: #212529;
     border-radius: 10px;
     padding: 10px 20px;
     text-align: center;
-    
+
     font-weight: 700;
 }
 #showunique{
@@ -183,8 +146,8 @@ p{
     width:max-content;
     margin-top: 10px;
     text-align: center;
-   
-    
+
+
 }
 #footer{
     text-align: center;
@@ -209,5 +172,5 @@ p{
     /* padding: 10px 20px; */
     text-align: center;
     /* margin-top: 20px; */
-  
+
 }

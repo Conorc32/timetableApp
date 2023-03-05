@@ -21,7 +21,7 @@ exports.addAdminRole = functions.https.onCall((data, context) => {
   });
 });
 
-var messagesRef = firebase.database().ref('image');
+var messagesRef = firebase.database().ref('messages');
 
 // Listen for form submit
 

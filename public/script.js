@@ -14,7 +14,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // Reference messages collection
-var messagesRef = firebase.database().ref('image');
+var messagesRef = firebase.database().ref('message');
 
 // Listen for form submit
 
@@ -65,9 +65,19 @@ function saveMessage(downloadURL) {
     shU.value=unique;
     showUnique.style.display = "block";
     // showUnique.value = unique;
+
+    var courseTitle = document.getElementById("courseTitle").value;
+    var school = document.getElementById("school").value;
+    var college = document.getElementById("college").value;
+
+
+
     newMessageRef.set({
         url: downloadURL,
-        number: unique
+        number: unique,
+        course: courseTitle,
+        school: school,
+        college: college
     });
     document.getElementById("upload").innerHTML = "Upload Successful";
     //Make file input empty
