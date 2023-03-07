@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Timetable ICS distributor</title>
+</head>
+<body>
+<div class="card">
+  <h1>University of Galway Timetables</h1>
+  <h2>Upload File</h2>
+  <input type="file" id="file" ><br>
+  <input type="text" id="courseTitle" placeholder="Enter ID of course calendar belongs to e.g. 4BCT">
+  <select name="Colleges" id="colleges">
+    <option value="arts">College of Arts, Social Sciences & Celtic Studies</option>
+    <option value="business">College of Business, Public Policy, & Law</option>
+    <option value="science">College of Science & Engineering</option>
+    <option value="medicine">College of Medicine, Nursing, & Health Sciences</option>
+  </select>
+  <select name="schools" id="schools">
+    <option value='education'>School of Education</option>
+    <option value='english'>School of English & Creative Arts</option>
+    <option value='geography'>School of Geography, Archaeology and Irish Studies</option>
+    <option value='history'>School of History & Philosophy</option>
+    <option value='languages'>School of Languages, Literatures and Cultures</option>
+    <option value='politics'>School of Political Science and Sociology</option>
+    <option value='psychology'>School of Psychology</option>
+  </select>
+  <button id="upload" onclick="uploadImage()">Upload<img id="uping" src="upload.png" alt="none"/></button>
+  <div id="ShowUniqueID" hidden><p>Unique ID</p><input type="text" id="showunique"  value="23456" disabled></input></div>
+  <!-- <br> -->
+  <div class="Download" id="downloadiv">
+    <h2>Receive File</h2>
+
+    <input type="text" id="unique" placeholder="Enter Unique ID">
+    <center>
+      <button id="show" onclick="showimage()">Download<img id="downimg" src="download.png" alt="none"/></button>
+    </center>
+  </div>
+
+</div>
+<button id="bob" onclick="getFiles()">Get files</button>
+<div id="files"> </div>
+<table id = "fileTable">
+
+</table>
+<p id="footer">
+  Conor Corcoran's FYP
+  <a href="https://github.com/Conorc32/timetableApp">Github Link</a>
+</p>
+</body>
+<script src="https://www.gstatic.com/firebasejs/8.0.2/firebase.js"></script>
+<script src="script.js"></script>
+<script src="getFiles.js"></script>
+<script src="upload.js"></script>
+</html>

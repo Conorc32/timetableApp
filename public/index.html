@@ -6,34 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <title>Timetable ICS distributor</title>
+
+
 </head>
-<body>
-<div class="card">
-  <h1>Timetable Distribution</h1>
-
-  <h2>Upload File</h2>
-  <input type="file" id="file" ><br>
-  <center><button id="upload" onclick="uploadImage()">Upload<img id="uping" src="upload.png" alt="none"/></button></center>
-  <input type="text" id="courseTitle" placeholder="Enter ID of course calendar belongs to e.g. 4BCT">
-  <input type="text" id="school" placeholder="Enter name of school">
-  <input type="text" id="college" placeholder="Enter name of college">
-  <center><div id="ShowUniqueID" hidden><p>Unique ID</p><input type="text" id="showunique"  value="23456" disabled></input></div></center>
-  <!-- <br> -->
-  <div class="Download" id="downloadiv">
-    <h2>Receive File</h2>
-
-    <input type="text" id="unique" placeholder="Enter Unique ID">
-    <center>
-      <button id="show" onclick="showimage()">Download<img id="downimg" src="download.png" alt="none"/></button>
-    </center>
-  </div>
-
+<div>
+  <a href="/admin.html">Admin upload</a>
+  <a href="/tutorial.html">Tutorial</a>
 </div>
-<p id="footer">
-  Conor Corcoran's FYP
-  <a href="https://github.com/Conorc32/timetableApp">Github Link</a>
-</p>
-</body>
-<script src="https://www.gstatic.com/firebasejs/8.0.2/firebase.js"></script>
-<script src="script.js"></script>
+<div class="card">
+  <h1>University of Galway Timetables</h1>
+  <h2>Timetables</h2>
+  <button id="bob" onclick="getFiles()">Get timetables</button>
+  <div id="files"> </div>
+  <table id = "fileTable">
+
+  </table>
+  <p id="footer">
+    Conor Corcoran's FYP
+    <a href="https://github.com/Conorc32/timetableApp">Github Link</a>
+  </p>
+</div>
+  <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase.js"></script>
+<script src="getFiles.js"></script>
 </html>
