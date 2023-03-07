@@ -9,28 +9,32 @@ const firebaseConfig = {
     measurementId: "G-74XC2ZTDCY"
 };
 
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-function getFiles(){
-    var ref = firebase.database().ref("timetableLink");
-    var filesTable = document.getElementById("fileTable")
-    var build =
-        "<tr><th>Course ID</th>" +
+function getIndividualFile() {
+    var ref = firebase.database().ref("timetableLink")
+    var searchModule = document.getElementById("courseTitle").value
+    var searchOutput = document.getElementById("searchOutput")
+    var build = "<tr><th>Course ID</th>" +
         "<th>College</th>" +
         "<th>School</th>" +
         "<th>Url</th></tr>"
+
+
     ref.on("value", function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-                var childData = childSnapshot.val();
+        snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val();
+            if(childData.course == searchModule) {
                 build += "<tr><td>" + childData.course + "</td>" +
                     "<td>" + childData.college + "</td>" +
                     "<td>" + childData.school + "</td>" +
                     "<td>" + childData.url + "</td></tr>"
-            });
-        }
-    );
+            } else {
+                build = "File not found"
+            }
+        });
+    });
 
-    filesTable.innerHTML=build
+    searchOutput.innerHTML = build
 }
