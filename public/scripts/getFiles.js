@@ -41,13 +41,11 @@ function getFiles(){
 }
 
 function getFilesByCollege(){
-    var ref = firebase.database().ref("timetableLink");
+    var ref = firebase.database().ref("timetableLink/");
     var byCollegeOutput = document.getElementById("byCollege")
 
 
     ref.on("value", function(snapshot) {
-
-
         var artsBuild =
             "<h2>College of Arts, Social Sciences & Celtic Studies</h2>" +
             "<button class='btn btn-primary' type='button' " +

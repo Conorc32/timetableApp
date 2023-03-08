@@ -16,6 +16,7 @@ function getIndividualFile() {
     var ref = firebase.database().ref("timetableLink")
     var searchModule = document.getElementById("courseTitle").value
     var searchOutput = document.getElementById("searchOutput")
+    var found = false
     var build = "<tr><th>Course ID</th>" +
         "<th>College</th>" +
         "<th>School</th>" +
@@ -29,12 +30,17 @@ function getIndividualFile() {
                 build += "<tr><td>" + childData.course + "</td>" +
                     "<td>" + childData.college + "</td>" +
                     "<td>" + childData.school + "</td>" +
-                    "<td>" + childData.url + "</td></tr>"
-            } else {
-                build = "File not found"
+                    "<td>" + childData.url + "</td></tr>";
+                found = true
             }
         });
+
+        if(found == true) {
+            searchOutput.innerHTML = build;
+        } else {
+            searchOutput.innerHTML = "File not found."
+        }
+
     });
 
-    searchOutput.innerHTML = build
 }

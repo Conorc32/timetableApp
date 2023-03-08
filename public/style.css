@@ -9,7 +9,16 @@
     height: 53px;
 }
 
+.logo {
+    width: 170px;
+    height: 53px;
+}
+
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #a400a7 !important;
+}
+
+.container-fluid {
     background-color: #a400a7 !important;
 }
 

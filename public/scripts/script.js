@@ -18,7 +18,7 @@ var messagesRef = firebase.database().ref("message");
 
 // Listen for form submit
 
-function uploadImage() {
+function uploadTimetable() {
     if(document.getElementById("file").value != ""){
         var uploadtext = document.getElementById("upload").innerHTML;
         document.getElementById("upload").innerHTML = "Uploading...";
