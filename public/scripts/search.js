@@ -17,10 +17,7 @@ function getIndividualFile() {
     var searchModule = document.getElementById("courseTitle").value
     var searchOutput = document.getElementById("searchOutput")
     var found = false
-    var build = "<tr><th>Course ID</th>" +
-        "<th>College</th>" +
-        "<th>School</th>" +
-        "<th>Url</th></tr>"
+    var build = ""
 
 
     ref.on("value", function(snapshot) {
@@ -30,7 +27,8 @@ function getIndividualFile() {
                 build += "<tr><td>" + childData.course + "</td>" +
                     "<td>" + childData.college + "</td>" +
                     "<td>" + childData.school + "</td>" +
-                    "<td>" + childData.url + "</td></tr>";
+                    "<td>" + childData.courseName + "</td>" +
+                    "<td><a href='"+ childData.url +"'>Download</a>" + "</td></tr>"
                 found = true
             }
         });

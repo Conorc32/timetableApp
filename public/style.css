@@ -4,6 +4,12 @@
     text-align: center;
 }
 
+.myCenter {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
 #logo {
     width: 170px;
     height: 53px;

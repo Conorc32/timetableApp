@@ -24,6 +24,7 @@ function getFiles(){
         "<tr><th>Course ID</th>" +
         "<th>College</th>" +
         "<th>School</th>" +
+        "<th>CourseName</th>" +
         "<th>Url</th></tr>"
     ref.on("value", function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
@@ -32,7 +33,8 @@ function getFiles(){
                 build += "<tr><td>" + childData.course + "</td>" +
                     "<td>" + childData.college + "</td>" +
                     "<td>" + childData.school + "</td>" +
-                    "<td>" + childData.url + "</td></tr>"
+                    "<td>" + childData.courseName + "</td>" +
+                    "<td><a href='" + childData.url + "'>Download</a></td></tr>"
             });
         }
     );
@@ -55,6 +57,7 @@ function getFilesByCollege(){
             "<table class='table table-bordered'><thead>" +
             "<tr><th>Course ID</th>" +
             "<th>School</th>" +
+            "<th>Course Name</th>" +
             "<th>Url</th></tr></thead>" +
             "<tbody class='table-group-divider'>"
         var scienceBuild =
@@ -66,6 +69,7 @@ function getFilesByCollege(){
             "<table class='table table-bordered'><thead>" +
             "<tr><th>Course ID</th>" +
             "<th>School</th>" +
+            "<th>Course Name</th>" +
             "<th>Url</th></tr></thead>" +
             "<tbody class='table-group-divider'>"
         var businessBuild =
@@ -77,6 +81,7 @@ function getFilesByCollege(){
             "<table class='table table-bordered'><thead>" +
             "<tr><th>Course ID</th>" +
             "<th>School</th>" +
+            "<th>Course Name</th>" +
             "<th>Url</th></tr></thead>" +
             "<tbody class='table-group-divider'>"
         var medicineBuild =
@@ -88,24 +93,28 @@ function getFilesByCollege(){
             "<table class='table table-bordered'><thead>" +
             "<tr><th>Course ID</th>" +
             "<th>School</th>" +
+            "<th>Course Name</th>" +
             "<th>Url</th></tr></thead>" +
             "<tbody class='table-group-divider'>"
 
         snapshot.forEach(function(childSnapshot) {
             var childData = childSnapshot.val();
             console.log(snapshot.val())
-            var build = "<tr><td>" + childData.course + "</td>" +
-                    "<td>" + childData.school + "</td>" +
-                    "<td>" + childData.url + "</td></tr>"
-                if (childData.college == "arts") {
-                    artsBuild += build
-                } else if (childData.college == "science") {
-                    scienceBuild += build
-                } else if (childData.college == "medicine") {
-                    medicineBuild += build
-                } else {
-                    businessBuild += build
-                }
+            var build =
+                "<tr><td>" + childData.course + "</td>" +
+                "<td>" + childData.school + "</td>" +
+                "<td>" + childData.courseName + "</td>" +
+                "<td><a href='" + childData.url + "'>Download</a></td></tr>"
+
+            if (childData.college == "arts") {
+                artsBuild += build
+            } else if (childData.college == "science") {
+                scienceBuild += build
+            } else if (childData.college == "medicine") {
+                medicineBuild += build
+            } else {
+                businessBuild += build
+            }
         });
 
         artsBuild += "</tbody></table></div>"

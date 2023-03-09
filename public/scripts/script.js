@@ -60,12 +60,14 @@ function saveMessage(downloadURL) {
     var courseTitle = document.getElementById("courseTitle").value;
     var school = document.getElementById("schools").value;
     var college = document.getElementById("colleges").value;
+    var courseName = document.getElementById("courseName").value;
 
     var newTimetableLinkRef = firebase.database().ref("timetableLink/"+courseTitle);
 
     newTimetableLinkRef.set({
         url: downloadURL,
         course: courseTitle,
+        courseName: courseName,
         school: school,
         college: college
     });

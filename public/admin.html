@@ -26,10 +26,10 @@
                     <a class="nav-link active" aria-current="page" href="/search.html">Search</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin.html">Admin Console</a>
+                    <a class="nav-link active" href="/admin.html">Admin Console</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/tutorial.html">Tutorial</a>
+                    <a class="nav-link active" href="/tutorial.html">Tutorial</a>
                 </li>
             </ul>
         </div>
@@ -89,38 +89,10 @@
         <div class="b-example-divider"></div>
         <div class="row g-5">
             <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">Create and Upload Timetable</h4>
+                <h4 class="mb-3">Add Events and Upload Timetable</h4>
                 <form>
                     <div class="row g-3">
-                        <div class="col-18">
-                            <label for="courseTitle" class="form-label">Course ID</label>
-                            <input type="text" class="form-control" id="courseTitle2" placeholder="Enter ID of course calendar belongs to e.g. 4BCT">
-                        </div>
-                        <div class="col-18">
-                            <label for="courseName" class="form-label">Course Name</label>
-                            <input type="text" class="form-control" id="courseName2" placeholder="Enter Course name e.g. Computer Science and Information Technology">
-                        </div>
-                        <div class="col-18">
-                            <label for="colleges" class="form-label">College</label>
-                            <select name="Colleges" id="colleges2" class="form-select">
-                                <option value="arts">College of Arts, Social Sciences & Celtic Studies</option>
-                                <option value="business">College of Business, Public Policy, & Law</option>
-                                <option value="science">College of Science & Engineering</option>
-                                <option value="medicine">College of Medicine, Nursing, & Health Sciences</option>
-                            </select>
-                        </div>
-                        <div class="col-18">
-                            <label for="schools" class="form-label">School</label>
-                            <select name="schools" id="schools2" class="form-select">
-                                <option value='education'>School of Education</option>
-                                <option value='english'>School of English & Creative Arts</option>
-                                <option value='geography'>School of Geography, Archaeology and Irish Studies</option>
-                                <option value='history'>School of History & Philosophy</option>
-                                <option value='languages'>School of Languages, Literatures and Cultures</option>
-                                <option value='politics'>School of Political Science and Sociology</option>
-                                <option value='psychology'>School of Psychology</option>
-                            </select>
-                        </div>
+                        <h5 class="mb-3">Select event properties</h5>
                         <div class="col-18">
                             <label for="subject" class="form-label">Subject</label>
                             <input type="text" class="form-control" id="subject" placeholder="subject">
@@ -135,17 +107,66 @@
                         </div>
                         <div class="col-18">
                             <label for="courseTitle" class="form-label">Begin</label>
-                            <input type="text" class="form-control" id="begin" placeholder="begin">
+                            <input type="text" class="form-control" id="begin" placeholder="Enter in mm/dd/yyyy format">
                         </div>
                         <div class="col-18">
                             <label for="end" class="form-label">End</label>
-                            <input type="text" class="form-control" id="end" placeholder="end">
+                            <input type="text" class="form-control" id="end" placeholder="Enter in mm/dd/yyyy format">
                         </div>
                         <div class="col-18">
                             <label for="rrule" class="form-label">Recurrence Rule</label>
                             <input type="text" class="form-control" id="rrule" placeholder="Not implemented yet">
                         </div>
+                        <div class="col-18">
+                            <label for="eventsTable" class="form-label">Table of events</label>
+                            <table class='table table-bordered' id="eventsTable">
+                                <thead>
+                                <tr>
+                                    <th>subject</th>
+                                    <th>Description</th>
+                                    <th>Location</th>
+                                    <th>Begin</th>
+                                    <th>End</th>
+                                </tr>
+                                </thead>
+                                <tbody class='table-group-divider' id="events">
 
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <button class="w-100 btn btn-primary btn-lg" id="addEvent" type="button" onclick="addEventToTimetable()">Add Event</button>
+                    <hr class="my-4">
+                    <h5 class="mb-3">Select course properties</h5>
+                    <div class="col-18">
+                        <label for="courseTitle" class="form-label">Course ID</label>
+                        <input type="text" class="form-control" id="courseTitle2" placeholder="Enter ID of course calendar belongs to e.g. 4BCT">
+                    </div>
+                    <div class="col-18">
+                        <label for="courseName" class="form-label">Course Name</label>
+                        <input type="text" class="form-control" id="courseName2" placeholder="Enter Course name e.g. Computer Science and Information Technology">
+                    </div>
+                    <div class="col-18">
+                        <label for="colleges" class="form-label">College</label>
+                        <select name="Colleges" id="colleges2" class="form-select">
+                            <option value="arts">College of Arts, Social Sciences & Celtic Studies</option>
+                            <option value="business">College of Business, Public Policy, & Law</option>
+                            <option value="science">College of Science & Engineering</option>
+                            <option value="medicine">College of Medicine, Nursing, & Health Sciences</option>
+                        </select>
+                    </div>
+                    <div class="col-18">
+                        <label for="schools" class="form-label">School</label>
+                        <select name="schools" id="schools2" class="form-select">
+                            <option value='education'>School of Education</option>
+                            <option value='english'>School of English & Creative Arts</option>
+                            <option value='geography'>School of Geography, Archaeology and Irish Studies</option>
+                            <option value='history'>School of History & Philosophy</option>
+                            <option value='languages'>School of Languages, Literatures and Cultures</option>
+                            <option value='politics'>School of Political Science and Sociology</option>
+                            <option value='psychology'>School of Psychology</option>
+                        </select>
                     </div>
                     <hr class="my-4">
                     <button class="w-100 btn btn-primary btn-lg" id="upload2" type="submit" onclick="createAndUpload()">Upload</button>
