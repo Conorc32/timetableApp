@@ -106,17 +106,36 @@
                             <input type="text" class="form-control" id="location" placeholder="location">
                         </div>
                         <div class="col-18">
-                            <label for="courseTitle" class="form-label">Begin</label>
+                            <label for="courseTitle" class="form-label">Begin Date</label>
                             <input type="text" class="form-control" id="begin" placeholder="Enter in mm/dd/yyyy format">
                         </div>
                         <div class="col-18">
-                            <label for="end" class="form-label">End</label>
+                            <label for="end" class="form-label">End Date</label>
                             <input type="text" class="form-control" id="end" placeholder="Enter in mm/dd/yyyy format">
                         </div>
                         <div class="col-18">
-                            <label for="rrule" class="form-label">Recurrence Rule</label>
-                            <input type="text" class="form-control" id="rrule" placeholder="Not implemented yet">
+                            <label for="courseTitle" class="form-label">Begin Time</label>
+                            <input type="time" class="form-control" id="beginTime">
                         </div>
+                        <div class="col-18">
+                            <label for="end" class="form-label">End Time</label>
+                            <input type="time" class="form-control" id="endTime">
+                        </div>
+                        <div class="col-18">
+                            <label for="frequency" class="form-label">Frequency</label>
+                            <select name="Frequency" id="frequency" class="form-select">
+                                <option value="once">One off</option>
+                                <option value="DAILY">Daily</option>
+                                <option value="WEEKLY">Weekly</option>
+                                <option value="MONTHLY">Monthly</option>
+                                <option value="YEARLY">Yearly</option>
+                            </select>
+                        </div>
+                        <div class="col-18">
+                            <label for="end" class="form-label">Frequency Count</label>
+                            <input type="text" class="form-control" id="freqCount" placeholder="Enter length of time to repeat i.e. '12' weeks">
+                        </div>
+
                         <div class="col-18">
                             <label for="eventsTable" class="form-label">Table of events</label>
                             <table class='table table-bordered' id="eventsTable">
@@ -125,8 +144,12 @@
                                     <th>subject</th>
                                     <th>Description</th>
                                     <th>Location</th>
-                                    <th>Begin</th>
-                                    <th>End</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Frequency</th>
+                                    <th>Frequency Count</th>
                                 </tr>
                                 </thead>
                                 <tbody class='table-group-divider' id="events">

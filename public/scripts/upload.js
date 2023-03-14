@@ -62,12 +62,16 @@ function changeListener2(){
 }
 
 function createAndUpload() {
-    console.log(cal)
 
     var uploadtext = document.getElementById("upload").innerHTML;
     document.getElementById("upload").innerHTML = "Uploading...";
 
     var courseTitle = document.getElementById("courseTitle2").value;
+
+    for (let i = 0; i < eventsArray.length; i++) {
+        let currEvent = eventsArray[i];
+
+    }
 
     var file = cal.blobForUpload();
     var newFile = new File([file], courseTitle+'.ics', {type: 'text/calendar'});
@@ -94,16 +98,31 @@ function addEventToTimetable() {
     var location = document.getElementById("location").value
     var begin = document.getElementById("begin").value
     var end = document.getElementById("end").value
-    var rrule = document.getElementById("rrule").value
+    var beginTime = document.getElementById("beginTime").value
+    var endTime = document.getElementById("endTime").value
+    var frequency = document.getElementById("frequency").value
+    var freqCount = document.getElementById("freqCount").value
 
-    cal.addEvent(subject, description, location, begin, end, "")
-    eventsArray.push([subject, description, location, begin, end, ""])
+    let rrule  = ""
+    if (frequency != "once") {
+        rrule = {freq:frequency, count:freqCount};
+    }
+
+    beginTime = beginTime.replace(":", "")
+    endTime = endTime.replace(":", "")
+
+    //cal.addEvent(subject, description, location, begin, end, beginTime, endTime,rrule)
+    eventsArray.push([subject, description, location, begin, end, beginTime, endTime, frequency, freqCount])
 
     var eventBuild = "<tr><td>" + subject + "</td>" +
         "<td>" + description + "</td>" +
         "<td>" + location + "</td>" +
         "<td>" + begin + "</td>" +
-        "<td>" + end + "</td></tr>"
+        "<td>" + end + "</td>" +
+        "<td>" + beginTime + "</td>" +
+        "<td>" + endTime + "</td>" +
+        "<td>" + frequency + "</td>" +
+        "<td>" + freqCount + "</td></tr>"
 
     document.getElementById("events").innerHTML += eventBuild
     console.log(cal)

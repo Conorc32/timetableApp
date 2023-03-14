@@ -46,14 +46,18 @@ var ics = function(uidDomain, prodId) {
          * @param  {string} location    Location of event
          * @param  {string} begin       Beginning date of event
          * @param  {string} stop        Ending date of event
+         * @param  {string} startTime   Beginning time of event
+         * @param  {string} endTime     Ending time of event
          */
-        'addEvent': function(subject, description, location, begin, stop, rrule) {
+        'addEvent': function(subject, description, location, begin, stop, startTime, endTime, rrule) {
             // I'm not in the mood to make these optional... So they are all required
             if (typeof subject === 'undefined' ||
                 typeof description === 'undefined' ||
                 typeof location === 'undefined' ||
                 typeof begin === 'undefined' ||
-                typeof stop === 'undefined'
+                typeof stop === 'undefined' ||
+                typeof startTime === 'undefined' ||
+                typeof endTime === 'undefined'
             ) {
                 return false;
             }
@@ -140,6 +144,10 @@ var ics = function(uidDomain, prodId) {
                 end_time = 'T' + end_hours + end_minutes + end_seconds;
             }
             var now_time = 'T' + now_hours + now_minutes + now_seconds;
+            //added by me
+            start_time = 'T' + startTime +"00";
+            end_time ='T' + endTime + "00"
+            //end added by me
 
             var start = start_year + start_month + start_day + start_time;
             var end = end_year + end_month + end_day + end_time;
