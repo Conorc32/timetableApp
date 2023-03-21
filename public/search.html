@@ -47,7 +47,7 @@
                 </div>
                 <button class="w-100 btn btn-primary btn-lg" id="searchButton" type="submit" onclick="getIndividualFile()">Search by Course ID</button>
                 <div class="col-18">
-                    <label for="eventsTable" class="form-label">Table of events</label>
+                    <label for="eventsTable" class="form-label">Timetable Event</label>
                     <table class='table table-bordered' id="eventsTable">
                         <thead>
                         <tr>
@@ -62,6 +62,27 @@
 
                         </tbody>
                     </table>
+                    <label for="eventsTable" class="form-label">Table of events</label>
+                    <table class='table table-bordered' id="events">
+                        <thead>
+                        <tr>
+                            <th>subject</th>
+                            <th>Description</th>
+                            <th>Location</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Frequency</th>
+                            <th>Frequency Count</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody class='table-group-divider' id="eventOutput">
+
+                        </tbody>
+                    </table>
+                    <button type="button" onclick="addBlankEventToTable()">Add blank Event</button>
                 </div>
             </div>
         </div>

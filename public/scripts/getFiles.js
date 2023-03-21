@@ -105,6 +105,7 @@ function getFilesByCollege(){
                 "<td>" + childData.school + "</td>" +
                 "<td>" + childData.courseName + "</td>" +
                 "<td><a href='" + childData.url + "'>Download</a></td></tr>"
+            getFileContents(childData.url)
 
             if (childData.college == "arts") {
                 artsBuild += build
@@ -129,5 +130,19 @@ function getFilesByCollege(){
     );
 }
 
+function getFileContents(url) {
+    var xhr = new XMLHttpRequest();
+    //xhr.responseType = 'json';
+    xhr.onload = function(event) {
+        var json= xhr.response;
+        console.log(json);      // now you read the file c
 
+        const myArray = json.split("\n");
+        console.log(myArray[0])
+        console.log("here")
+
+    };
+    xhr.open('GET', url);
+    xhr.send();
+}
 

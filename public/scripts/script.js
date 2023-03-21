@@ -112,3 +112,14 @@ function renameFile(originalFile, newName) {
     });
 }
 
+function getFileContents2(url) {
+    var xhr = new XMLHttpRequest();
+    //xhr.responseType = 'json';
+    xhr.onload = function(event) {
+        var json= xhr.response;
+        console.log(json);      // now you read the file content
+    };
+    xhr.open('GET', url);
+    xhr.send();
+}
+

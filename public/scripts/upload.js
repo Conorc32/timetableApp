@@ -1,7 +1,7 @@
 document.getElementById("colleges").onchange = changeListener;
 document.getElementById("colleges2").onchange = changeListener2;
 var cal = ics();
-var eventsArray = []
+var eventsArray = [];
 
 function changeListener(){
     var value = this.value
@@ -68,10 +68,22 @@ function createAndUpload() {
 
     var courseTitle = document.getElementById("courseTitle2").value;
 
+    console.log(eventsArray);
+
     for (let i = 0; i < eventsArray.length; i++) {
         let currEvent = eventsArray[i];
+        let rrule  = "";
+        if (currEvent[7] != "once") {
+            rrule = {freq:currEvent[7], count:currEvent[8]};
 
+        }
+        cal.addEvent(currEvent[0], currEvent[1], currEvent[2], currEvent[3], currEvent[4], currEvent[5], currEvent[6],rrule);
     }
+    console.log(eventsArray);
+    console.log(cal.events());
+    eventsArray = "";
+
+
 
     var file = cal.blobForUpload();
     var newFile = new File([file], courseTitle+'.ics', {type: 'text/calendar'});
@@ -88,6 +100,7 @@ function createAndUpload() {
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
             console.log('File available at', downloadURL);
             saveMessage2(downloadURL);
+            return false;
         });
     });
 }
@@ -102,11 +115,6 @@ function addEventToTimetable() {
     var endTime = document.getElementById("endTime").value
     var frequency = document.getElementById("frequency").value
     var freqCount = document.getElementById("freqCount").value
-
-    let rrule  = ""
-    if (frequency != "once") {
-        rrule = {freq:frequency, count:freqCount};
-    }
 
     beginTime = beginTime.replace(":", "")
     endTime = endTime.replace(":", "")
@@ -124,9 +132,9 @@ function addEventToTimetable() {
         "<td>" + frequency + "</td>" +
         "<td>" + freqCount + "</td></tr>"
 
-    document.getElementById("events").innerHTML += eventBuild
-    console.log(cal)
-    return false
+    document.getElementById("events").innerHTML += eventBuild;
+    console.log(cal);
+    return false;
 }
 
 function saveMessage2(downloadURL) {
@@ -135,7 +143,7 @@ function saveMessage2(downloadURL) {
     var college = document.getElementById("colleges2").value;
     var courseName = document.getElementById("courseName2").value;
 
-    var newTimetableLinkRef = firebase.database().ref("timetableLink/"+courseTitle);
+    var newTimetableLinkRef = firebase.database().ref("timetableLink/" + courseTitle);
 
     newTimetableLinkRef.set({
         url: downloadURL,
@@ -147,9 +155,16 @@ function saveMessage2(downloadURL) {
     document.getElementById("upload").innerHTML = "Upload Successful";
     //Make file input empty
     document.getElementById("file").value = "";
+    return false;
 }
 
-function download() {
-    cal.build();
-    return cal.download();
+function getFileContents(url) {
+    var xhr = new XMLHttpRequest();
+    //xhr.responseType = 'json';
+    xhr.onload = function(event) {
+        var json= xhr.response;
+        console.log(json);      // now you read the file content
+    };
+    xhr.open('GET', url);
+    xhr.send();
 }
