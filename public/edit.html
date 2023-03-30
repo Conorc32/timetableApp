@@ -23,13 +23,13 @@
                     <a class="nav-link active" aria-current="page" href="/index.html">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/search.html">Search</a>
+                    <a class="nav-link active" aria-current="page" href="/edit.html">Edit Existing Timetable</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/admin.html">Admin Console</a>
+                    <a class="nav-link active" href="/upload.html">Upload Timetable</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/tutorial.html">Tutorial</a>
+                    <a class="nav-link active" href="/help.html">Downloading and Subscribing Help</a>
                 </li>
             </ul>
         </div>
@@ -38,8 +38,8 @@
 
 <div>
     <h1>University of Galway Timetables</h1>
-    <div class="row g-5">
-        <div class="col-md-7 col-lg-8 myCenter">
+    <div class="row">
+        <div class="col-md-7 col-lg-12 myCenter">
             <div id ="search">
                 <div class="col-18">
                     <label for="courseTitle" class="form-label">Search by Course ID</label>
@@ -63,11 +63,11 @@
                         </tbody>
                     </table>
                     <label for="eventsTable" class="form-label">Table of events</label>
-                    <table class='table table-bordered' id="events">
+                    <table class='table table-responsive table-bordered' id="events">
                         <thead>
                         <tr>
-                            <th>subject</th>
-                            <th>Description</th>
+                            <th>Module name</th>
+                            <th>Lecturer</th>
                             <th>Location</th>
                             <th>Start Date</th>
                             <th>End Date</th>
@@ -82,7 +82,8 @@
 
                         </tbody>
                     </table>
-                    <button type="button" onclick="addBlankEventToTable()">Add blank Event</button>
+                    <button class="w-100 btn btn-primary btn-lg" type="button" onclick="addBlankEventToTable()">Add blank Event</button>
+                    <button class="w-100 btn btn-primary btn-lg" id="upload" type="button" onclick="createAndUpload()">Upload</button>
                 </div>
             </div>
         </div>
@@ -97,4 +98,5 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase.js"></script>
 <script src="scripts/search.js"></script>
+<script src="scripts/ics.js"></script>
 </html>

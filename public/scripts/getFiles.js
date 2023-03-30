@@ -58,7 +58,8 @@ function getFilesByCollege(){
             "<tr><th>Course ID</th>" +
             "<th>School</th>" +
             "<th>Course Name</th>" +
-            "<th>Url</th></tr></thead>" +
+            "<th>Copy Url</th>" +
+            "<th>Download link</th></tr></thead>" +
             "<tbody class='table-group-divider'>"
         var scienceBuild =
             "<h2>College of Science & Engineering</h2>" +
@@ -70,7 +71,8 @@ function getFilesByCollege(){
             "<tr><th>Course ID</th>" +
             "<th>School</th>" +
             "<th>Course Name</th>" +
-            "<th>Url</th></tr></thead>" +
+            "<th>Copy Url</th>" +
+            "<th>Download link</th></tr></thead>" +
             "<tbody class='table-group-divider'>"
         var businessBuild =
             "<h2>College of Business, Public Policy, & Law</h2>" +
@@ -82,7 +84,8 @@ function getFilesByCollege(){
             "<tr><th>Course ID</th>" +
             "<th>School</th>" +
             "<th>Course Name</th>" +
-            "<th>Url</th></tr></thead>" +
+            "<th>Copy Url</th>" +
+            "<th>Download link</th></tr></thead>" +
             "<tbody class='table-group-divider'>"
         var medicineBuild =
             "<h2>College of Medicine, Nursing, & Health Sciences</h2>" +
@@ -94,16 +97,19 @@ function getFilesByCollege(){
             "<tr><th>Course ID</th>" +
             "<th>School</th>" +
             "<th>Course Name</th>" +
-            "<th>Url</th></tr></thead>" +
+            "<th>Copy Url</th>" +
+            "<th>Download link</th></tr></thead>" +
             "<tbody class='table-group-divider'>"
 
         snapshot.forEach(function(childSnapshot) {
             var childData = childSnapshot.val();
             console.log(snapshot.val())
+            var copyString = 'copyToClipboard("'+childData.url+'")'
             var build =
                 "<tr><td>" + childData.course + "</td>" +
-                "<td>" + childData.school + "</td>" +
+                "<td>" + getSchoolString(childData.school) + "</td>" +
                 "<td>" + childData.courseName + "</td>" +
+                "<td><button type='button' onclick='"+ copyString+ "'>Copy</button></td>" +
                 "<td><a href='" + childData.url + "'>Download</a></td></tr>"
             getFileContents(childData.url)
 
@@ -146,3 +152,91 @@ function getFileContents(url) {
     xhr.send();
 }
 
+function getSchoolString(school) {
+    switch (school) {
+        case "education":
+            return "School of Education";
+        case "english":
+            return "School of English & Creative Arts";
+        case "geography":
+            return "School of Geography, Archaeology and Irish Studies";
+        case "history":
+            return "School of History & Philosophy";
+        case "languages":
+            return "School of Languages, Literatures and Cultures";
+        case "politics":
+            return "School of Political Science and Sociology";
+        case "economics":
+            return "J.E. Cairnes School of Business & Economics";
+        case "law":
+            return "School of Law";
+        case "shannon":
+            return "Shannon College of Hotel Management";
+        case "biology":
+            return "School of Biological and Chemical Sciences";
+        case "computer":
+            return "School of Computer Science";
+        case "engineering":
+            return "School of Engineering";
+        case "mathematical":
+            return "School of Mathematical and Statistical Sciences";
+        case "natural":
+            return "School of Natural Sciences";
+        case "medicine":
+            return "School of Medicine";
+        case "nursing":
+            return "School of Nursing & Midwifery";
+        case "health":
+            return "School of Health Sciences";
+        default:
+            return school;
+    }
+}
+
+function getSchoolFromSchoolString(string) {
+    switch (string) {
+        case "School of Education":
+            return "education";
+        case "School of English & Creative Arts":
+            return "english";
+        case "School of Geography, Archaeology and Irish Studies":
+            return "geography";
+        case "School of History & Philosophy":
+            return "history";
+        case "School of Languages, Literatures and Cultures":
+            return "languages";
+        case "School of Political Science and Sociology":
+            return "politics";
+        case "J.E. Cairnes School of Business & Economics":
+            return "economics";
+        case "School of Law":
+            return "law";
+        case "Shannon College of Hotel Management":
+            return "shannon";
+        case "School of Biological and Chemical Sciences":
+            return "biology";
+        case "School of Computer Science":
+            return "computer";
+        case "School of Engineering":
+            return "engineering";
+        case "School of Mathematical and Statistical Sciences":
+            return "mathematical";
+        case "School of Natural Sciences":
+            return "natural";
+        case "School of Medicine":
+            return "medicine";
+        case "School of Nursing & Midwifery":
+            return "nursing";
+        case "School of Health Sciences":
+            return "health";
+        default:
+            return string;
+    }
+}
+
+function copyToClipboard(url) {
+    // Copy the text inside the text field
+    console.log(url);
+    console.log(document.queryCommandSupported('copy'));
+    navigator.clipboard.writeText(String(url));
+}

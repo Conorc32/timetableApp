@@ -27,7 +27,7 @@ function changeListener(){
     } else if (value == "medicine"){
         newDropdown += "<option value='medicine'>School of Medicine</option>";
         newDropdown += "<option value='nursing'>School of Nursing & Midwifery</option>";
-        newDropdown += "<option value='engineering'>School of Health Sciences</option>";
+        newDropdown += "<option value='health'>School of Health Sciences</option>";
     }
     document.getElementById("schools").innerHTML = newDropdown;
 }
@@ -62,28 +62,22 @@ function changeListener2(){
 }
 
 function createAndUpload() {
-
     var uploadtext = document.getElementById("upload").innerHTML;
     document.getElementById("upload").innerHTML = "Uploading...";
 
     var courseTitle = document.getElementById("courseTitle2").value;
 
-    console.log(eventsArray);
-
     for (let i = 0; i < eventsArray.length; i++) {
         let currEvent = eventsArray[i];
         let rrule  = "";
-        if (currEvent[7] != "once") {
+        let beginTime=currEvent[5].replace(":","");
+        let endTime=currEvent[6].replace(":","") ;
+        if (currEvent[7] != "once" && currEvent[7] != "once") {
             rrule = {freq:currEvent[7], count:currEvent[8]};
-
         }
-        cal.addEvent(currEvent[0], currEvent[1], currEvent[2], currEvent[3], currEvent[4], currEvent[5], currEvent[6],rrule);
+        cal.addEvent(currEvent[0], currEvent[1], currEvent[2], currEvent[3], currEvent[4], beginTime, endTime,rrule);
     }
-    console.log(eventsArray);
-    console.log(cal.events());
-    eventsArray = "";
-
-
+    eventsArray = [];
 
     var file = cal.blobForUpload();
     var newFile = new File([file], courseTitle+'.ics', {type: 'text/calendar'});
@@ -106,6 +100,9 @@ function createAndUpload() {
 }
 
 function addEventToTimetable() {
+    console.log("Length before adding events table lemets :" + eventsArray.length)
+    addAllEventsTableElementsToEventsArray();
+    console.log("Length after adding events table lemets :" + eventsArray.length)
     var subject = document.getElementById("subject").value
     var description = document.getElementById("description").value
     var location = document.getElementById("location").value
@@ -115,25 +112,11 @@ function addEventToTimetable() {
     var endTime = document.getElementById("endTime").value
     var frequency = document.getElementById("frequency").value
     var freqCount = document.getElementById("freqCount").value
-
-    beginTime = beginTime.replace(":", "")
-    endTime = endTime.replace(":", "")
-
-    //cal.addEvent(subject, description, location, begin, end, beginTime, endTime,rrule)
+    console.log("Length before pushing to eventsArray:" + eventsArray.length)
     eventsArray.push([subject, description, location, begin, end, beginTime, endTime, frequency, freqCount])
-
-    var eventBuild = "<tr><td>" + subject + "</td>" +
-        "<td>" + description + "</td>" +
-        "<td>" + location + "</td>" +
-        "<td>" + begin + "</td>" +
-        "<td>" + end + "</td>" +
-        "<td>" + beginTime + "</td>" +
-        "<td>" + endTime + "</td>" +
-        "<td>" + frequency + "</td>" +
-        "<td>" + freqCount + "</td></tr>"
-
-    document.getElementById("events").innerHTML += eventBuild;
-    console.log(cal);
+    console.log("Length after pushing to eventsArray:" + eventsArray.length)
+    changeOccurredSoUpdateEventsTable()
+    console.log(eventsArray.length)
     return false;
 }
 
@@ -149,7 +132,7 @@ function saveMessage2(downloadURL) {
         url: downloadURL,
         course: courseTitle,
         courseName: courseName,
-        school: school,
+        school: getSchoolFromSchoolString(school),
         college: college
     });
     document.getElementById("upload").innerHTML = "Upload Successful";
@@ -168,3 +151,196 @@ function getFileContents(url) {
     xhr.open('GET', url);
     xhr.send();
 }
+
+function addAllEventsTableElementsToEventsArray() {
+    eventsArray=[]
+    len = eventsArray.length
+    console.log("Len: " + len)
+    for(let i=0;i<len; i++) {
+        let iString = ""+i
+        let subject = document.getElementById("subject"+iString).value
+        let description = document.getElementById("description"+iString).value
+        let location = document.getElementById("location"+iString).value
+        let beginDate = document.getElementById("begin"+iString).value
+        let endDate = document.getElementById("end"+iString).value
+        let beginTime = document.getElementById("beginTime"+iString).value
+        let endTime = document.getElementById("endTime"+iString).value
+        let frequency = document.getElementById("frequency"+iString).value
+        let freqCount = document.getElementById("freqCount"+iString).value
+        eventsArray.push([subject, description, location, beginDate, endDate,  beginTime, endTime, frequency, freqCount])
+    }
+    console.log("Current length: "+eventsArray.length)
+}
+function changeOccurredSoUpdateEventsTable() {
+    document.getElementById("events").innerHTML =""
+    for(let i=0; i<eventsArray.length; i++) {
+        let subject = eventsArray[i][0]
+        let description = eventsArray[i][1]
+        let location = eventsArray[i][2]
+        let beginDate = eventsArray[i][3]
+        let endDate = eventsArray[i][4]
+        let beginTime = eventsArray[i][5]
+        let endTime = eventsArray[i][6]
+        let frequency = eventsArray[i][7]
+        let freqCount = eventsArray[i][8]
+        let num = i
+        let onceSelected = ""
+        let dailySelected= ""
+        let weeklySelected= ""
+        let monthlySelected = ""
+        let yearlySelected = ""
+
+        if (frequency==="once") {
+            onceSelected = "selected"
+        } else if (frequency==="DAILY") {
+            dailySelected="selected"
+        } else if (frequency==="WEEKLY"){
+            weeklySelected="selected"
+        } else if (frequency==="MONTHLY") {
+            monthlySelected="selected"
+        } else {
+            yearlySelected="selected"
+        }
+
+        let build = "<tr><td><input type='text' className='form-control' id='subject"+ num +"' value='" +subject +"'></td>" +
+            "<td><input type='text' class='form-control' id='description"+ num +"'value='"+ description +"'></td>" +
+            "<td><input type='text' class='form-control' id='location"+ num +"' value='" + location +"'></td>" +
+            "<td><input type='text' class='form-control' id='begin"+ num +"' value='" + beginDate +"'></td>" +
+            "<td><input type='text' class='form-control' id='end"+ num +"' value='" + endDate +"'></td>" +
+            "<td><input type='time' class='form-control' id='beginTime"+ num +"' value='" + beginTime +"'></td>" +
+            "<td><input type='time' class='form-control' id='endTime"+ num +"' value='" + endTime +"'></td>" +
+            "<td><select name='Frequency' id='frequency"+ num +"' class='form-select' value='"+frequency+"'>" +
+            "                                <option value='once'" + onceSelected + ">One off</option>" +
+            "                                <option value='DAILY'" + dailySelected + ">Daily</option>" +
+            "                                <option value='WEEKLY'" + weeklySelected +" >Weekly</option>" +
+            "                                <option value='MONTHLY'" + monthlySelected + " >Monthly</option>" +
+            "                                <option value='YEARLY'" + yearlySelected + " >Yearly</option>" +
+            "                            </select></td>" +
+            "<td><input type='text' class='form-control' id='freqCount"+ num +"' placeholder='Enter length of time to repeat i.e. 12 weeks' value='"+freqCount+"'</td>" +
+            getRemoveArrayButton(num) +
+            "</tr>"
+
+
+        document.getElementById("events").innerHTML += build
+    }
+}
+
+function getRemoveArrayButton(index) {
+    return "<td><button type='button' onclick='removeElement(" +index+")'> Remove</button></td>"
+}
+
+function removeElement(index) {
+    addAllEventsTableElementsToEventsArray()
+    eventsArray.splice(index, 1)
+    changeOccurredSoUpdateEventsTable()
+}
+
+function getSchoolString(school) {
+    switch (school) {
+        case "education":
+            return "School of Education";
+        case "english":
+            return "School of English & Creative Arts";
+        case "geography":
+            return "School of Geography, Archaeology and Irish Studies";
+        case "history":
+            return "School of History & Philosophy";
+        case "languages":
+            return "School of Languages, Literatures and Cultures";
+        case "politics":
+            return "School of Political Science and Sociology";
+        case "economics":
+            return "J.E. Cairnes School of Business & Economics";
+        case "law":
+            return "School of Law";
+        case "shannon":
+            return "Shannon College of Hotel Management";
+        case "biology":
+            return "School of Biological and Chemical Sciences";
+        case "computer":
+            return "School of Computer Science";
+        case "engineering":
+            return "School of Engineering";
+        case "mathematical":
+            return "School of Mathematical and Statistical Sciences";
+        case "natural":
+            return "School of Natural Sciences";
+        case "medicine":
+            return "School of Medicine";
+        case "nursing":
+            return "School of Nursing & Midwifery";
+        case "health":
+            return "School of Health Sciences";
+        default:
+            return school;
+    }
+}
+
+function getSchoolFromSchoolString(string) {
+    switch (string) {
+        case "School of Education":
+            return "education";
+        case "School of English & Creative Arts":
+            return "english";
+        case "School of Geography, Archaeology and Irish Studies":
+            return "geography";
+        case "School of History & Philosophy":
+            return "history";
+        case "School of Languages, Literatures and Cultures":
+            return "languages";
+        case "School of Political Science and Sociology":
+            return "politics";
+        case "J.E. Cairnes School of Business & Economics":
+            return "economics";
+        case "School of Law":
+            return "law";
+        case "Shannon College of Hotel Management":
+            return "shannon";
+        case "School of Biological and Chemical Sciences":
+            return "biology";
+        case "School of Computer Science":
+            return "computer";
+        case "School of Engineering":
+            return "engineering";
+        case "School of Mathematical and Statistical Sciences":
+            return "mathematical";
+        case "School of Natural Sciences":
+            return "natural";
+        case "School of Medicine":
+            return "medicine";
+        case "School of Nursing & Midwifery":
+            return "nursing";
+        case "School of Health Sciences":
+            return "health";
+        default:
+            return string;
+    }
+}
+
+function hideDivs() {
+    let selectValue =document.getElementById("uploadOption").value
+    let newDivs = document.getElementsByClassName("newUpload");
+    let existingDivs = document.getElementsByClassName("existingUpload");
+    if (selectValue==="new") {
+        for(let i =0; i< newDivs.length;i++) {
+            newDivs[i].style.display = "block";
+        }
+        for(let i =0; i< existingDivs.length;i++) {
+            existingDivs[i].style.display = "none";
+        }
+    } else {
+        for(let i =0; i< newDivs.length;i++) {
+            newDivs[i].style.display = "none";
+        }
+        for(let i =0; i< existingDivs.length;i++) {
+            existingDivs[i].style.display = "block";
+        }
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    let newDivs = document.getElementsByClassName("newUpload");
+    for(let i =0; i< newDivs.length;i++) {
+        newDivs[i].style.display = "none";
+    }
+});

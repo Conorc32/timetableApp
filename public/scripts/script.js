@@ -68,7 +68,7 @@ function saveMessage(downloadURL) {
         url: downloadURL,
         course: courseTitle,
         courseName: courseName,
-        school: school,
+        school: getSchoolFromSchoolString(school),
         college: college
     });
     document.getElementById("upload").innerHTML = "Upload Successful";
