@@ -48,7 +48,7 @@
                 <button class="w-100 btn btn-primary btn-lg" id="searchButton" type="submit" onclick="getIndividualFile()">Search by Course ID</button>
                 <div class="col-18">
                     <label for="eventsTable" class="form-label">Timetable Event</label>
-                    <table class='table table-bordered' id="eventsTable">
+                    <table class='table table-bordered table-responsive' id="eventsTable">
                         <thead>
                         <tr>
                             <th>Course ID</th>
@@ -78,12 +78,12 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody class='table-group-divider' id="eventOutput">
+                        <tbody class='table-group-divider output' id="eventOutput">
 
                         </tbody>
                     </table>
-                    <button class="w-100 btn btn-primary btn-lg" type="button" onclick="addBlankEventToTable()">Add blank Event</button>
-                    <button class="w-100 btn btn-primary btn-lg" id="upload" type="button" onclick="createAndUpload()">Upload</button>
+                    <button class="w-100 btn btn-primary btn-lg hideUntilFound" type="button" onclick="addBlankEventToTable()">Add blank Event</button>
+                    <button class="w-100 btn btn-primary btn-lg hideUntilFound" id="upload" type="submit" onclick="createAndUpload()">Upload</button>
                 </div>
             </div>
         </div>

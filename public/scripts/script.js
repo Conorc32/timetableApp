@@ -13,13 +13,10 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Reference messages collection
-var messagesRef = firebase.database().ref("message");
-
-// Listen for form submit
-
 function uploadTimetable() {
-    if(document.getElementById("file").value != ""){
+    let continueWithUpload = shouldUploadContinue();
+
+    if(continueWithUpload === true){
         var uploadtext = document.getElementById("upload").innerHTML;
         document.getElementById("upload").innerHTML = "Uploading...";
         var file = document.getElementById("file").files[0];
@@ -43,8 +40,8 @@ function uploadTimetable() {
         });
     }
     else{
-        var uploadtext = document.getElementById("upload").innerHTML;
-        document.getElementById("upload").innerHTML = "Please select a file";
+        var uploadtext = "Upload";
+        document.getElementById("upload").innerHTML = "Please ensure you have selected a file and supplied all requested summary information";
 
         // After 2 sec make it empty
         setTimeout(function(){
@@ -74,6 +71,12 @@ function saveMessage(downloadURL) {
     document.getElementById("upload").innerHTML = "Upload Successful";
     //Make file input empty
     document.getElementById("file").value = "";
+    document.getElementById("upload").innerHTML = "Upload Successful";
+    setTimeout(function () {
+        document.getElementById("upload").innerHTML = "Upload";
+    }, 1000);
+    //Make file input empty
+    return false;
 }
 
 function showimage(){
@@ -121,5 +124,13 @@ function getFileContents2(url) {
     };
     xhr.open('GET', url);
     xhr.send();
+}
+
+function shouldUploadContinue() {
+    if ((document.getElementById("file").value != "") && (document.getElementById("courseName").value != "") && (document.getElementById("courseTitle").value != "")) {
+        return true;
+    } else {
+        return false;
+    }
 }
 

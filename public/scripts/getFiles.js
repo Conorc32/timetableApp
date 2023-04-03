@@ -17,31 +17,6 @@ document.addEventListener("DOMContentLoaded", function() {
     getFilesByCollege();
 });
 
-function getFiles(){
-    var ref = firebase.database().ref("timetableLink");
-    var filesTable = document.getElementById("fileTable")
-    var build =
-        "<tr><th>Course ID</th>" +
-        "<th>College</th>" +
-        "<th>School</th>" +
-        "<th>CourseName</th>" +
-        "<th>Url</th></tr>"
-    ref.on("value", function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-                var childData = childSnapshot.val();
-                console.log(snapshot.val())
-                build += "<tr><td>" + childData.course + "</td>" +
-                    "<td>" + childData.college + "</td>" +
-                    "<td>" + childData.school + "</td>" +
-                    "<td>" + childData.courseName + "</td>" +
-                    "<td><a href='" + childData.url + "'>Download</a></td></tr>"
-            });
-        }
-    );
-
-    filesTable.innerHTML=build
-}
-
 function getFilesByCollege(){
     var ref = firebase.database().ref("timetableLink/");
     var byCollegeOutput = document.getElementById("byCollege")

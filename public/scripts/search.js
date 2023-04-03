@@ -17,6 +17,7 @@ let courseID=""
 let nameOfCollege=""
 let nameOfCourse=""
 let nameOfSchool=""
+let  su=""
 
 
 function getIndividualFile() {
@@ -35,9 +36,9 @@ function getIndividualFile() {
             var childData = childSnapshot.val();
             if(childData.course == searchModule) {
                 build += "<tr><td id ='course'>" + childData.course + "</td>" +
-                    "<td id='college'>" + childData.college + "</td>" +
-                    "<td id='school'>" + getSchoolString(childData.school) + "</td>" +
-                    "<td id ='courseName'>" + childData.courseName + "</td>" +
+                    "<td id='college'>"  + getCollegeString(childData.college) + "'></td>" +
+                    "<td id='school'>"  + getSchoolString(childData.school) + "</td>" +
+                    "<td id ='courseName'>"  + childData.courseName + "</td>" +
                     "<td><a href='"+ childData.url +"'>Download</a>" + "</td></tr>"
                 url=childData.url
                 courseID=childData.course
@@ -50,6 +51,10 @@ function getIndividualFile() {
 
         if(found == true) {
             searchOutput.innerHTML = build;
+            let buttonsToHide = document.getElementsByClassName("hideUntilFound");
+            for(let i =0; i< buttonsToHide.length;i++) {
+                buttonsToHide[i].style.display = "block";
+            }
             getFileContents(url)
         } else {
             searchOutput.innerHTML = "File not found."
@@ -96,16 +101,16 @@ function getEventDetailsAndAddToArray(event, num) {
     let yearlySelected = ""
 
     for (let i=0; i<event.length; i++) {
-        if (String(event[i]).trim().slice(0,7)=="SUMMARY".trim()) {
+        if (String(event[i]).trim().slice(0,7)=="SUMMARY".trim() && subject == "Doesn't exist.") {
             subject=String(event[i]).trim().split(";")[1].split(":")[1];
         }
-        if (String(event[i]).trim().slice(0,11)=="DESCRIPTION".trim()) {
+        if (String(event[i]).trim().slice(0,11)=="DESCRIPTION".trim() && description == "Doesn't exist.") {
             description=String(event[i]).trim().slice(12);
         }
-        if (String(event[i]).trim().slice(0,8)=="LOCATION".trim()) {
+        if (String(event[i]).trim().slice(0,8)=="LOCATION".trim() && location == "Doesn't exist.") {
             location=String(event[i]).trim().slice(9);
         }
-        if (String(event[i]).trim().slice(0,7)=="DTSTART".trim()) {
+        if (String(event[i]).trim().slice(0,7)=="DTSTART".trim() && beginDate == "Doesn't exist.") {
             let subEvent = String(event[i]).split(";")[1].split(":")
             beginDate=String(subEvent[1]).trim().slice(0,8);
             beginDate=beginDate.slice(4,6)+"/" + beginDate.slice(6,8) + "/" + beginDate.slice(0,4);
@@ -113,21 +118,20 @@ function getEventDetailsAndAddToArray(event, num) {
             beginTime=beginTime.slice(0,2)+":"+beginTime.slice(2,4)
         }
 
-        if (String(event[i]).trim().slice(0,5)==="DTEND".trim()) {
+        if (String(event[i]).trim().slice(0,5)==="DTEND".trim() && endDate == "Doesn't exist.") {
             let subEvent = String(event[i]).split(";")[1].split(":")
             endDate=String(subEvent[1]).slice(0,8);
             endDate=endDate.slice(4,6)+"/" + endDate.slice(6,8) + "/" + endDate.slice(0,4);
             endTime=String(subEvent[1]).slice(9);
             endTime=endTime.slice(0,2)+":"+endTime.slice(2,4)
         }
-        if (String(event[i]).trim().slice(0,5)=="rrule".trim()) {
+        if (String(event[i]).trim().slice(0,5)=="rrule".trim() && frequency == "Doesn't exist.") {
             let subEvent = String(event[i]).split(":")
             let subSub = subEvent[1].split(";")
             frequency=String(subSub[0]).trim().slice(5);
             freqCount=String(subSub[1]).trim().slice(6);
         }
     }
-
     if (frequency==="once") {
         onceSelected = "selected"
     } else if (frequency==="DAILY") {
@@ -139,20 +143,16 @@ function getEventDetailsAndAddToArray(event, num) {
     } else {
         yearlySelected="selected"
     }
-    console.log("beginDate:" + beginDate)
-    console.log("endDate:" + endDate)
-    console.log("begintime:" + beginTime)
-    console.log("endTime:" + endTime)
 
-
-    let build = "<tr><td><input type='text' className='form-control' id='subject"+ num +"' value='" +subject +"'></td>" +
-        "<td><input type='text' class='form-control' id='description"+ num +"'value='"+ description +"'></td>" +
+    let build = "<tr>" +
+        "<td><input type='text' class='form-control' id='subject"+ num +"'  value='" +subject +"'></td>" +
+        "<td><input type='text' class='form-control' id='description"+ num +"' value='"+ description +"'></td>" +
         "<td><input type='text' class='form-control' id='location"+ num +"' value='" + location +"'></td>" +
         "<td><input type='text' class='form-control' id='begin"+ num +"' value='" + beginDate +"'></td>" +
         "<td><input type='text' class='form-control' id='end"+ num +"' value='" + endDate +"'></td>" +
         "<td><input type='time' class='form-control' id='beginTime"+ num +"' value='" + beginTime +"'></td>" +
         "<td><input type='time' class='form-control' id='endTime"+ num +"' value='" + endTime +"'></td>" +
-        "<td><select name='Frequency' id='frequency"+ num +"' class='form-select' value='"+frequency+"'>" +
+        "<td><select name='Frequency' id='frequency"+ num +"' class='form-select'>" +
         "                                <option value='once'" + onceSelected + ">One off</option>" +
         "                                <option value='DAILY'" + dailySelected + ">Daily</option>" +
         "                                <option value='WEEKLY'" + weeklySelected +" >Weekly</option>" +
@@ -172,149 +172,87 @@ function getRemoveArrayButton(index) {
 }
 
 function removeElement(index) {
-    let len = searchedEventsArray.length
-    searchedEventsArray=[]
-
-    for(let i=0;i<len;i++) {
-        let iString = ""+i
-        let subject = document.getElementById("subject"+iString).value
-        let description = document.getElementById("description"+iString).value
-        let location = document.getElementById("location"+iString).value
-        let beginDate = document.getElementById("begin"+iString).value
-        let endDate = document.getElementById("end"+iString).value
-        let beginTime = document.getElementById("beginTime"+iString).value
-        let endTime = document.getElementById("endTime"+iString).value
-        let frequency = document.getElementById("frequency"+iString).value
-        let freqCount = document.getElementById("freqCount"+iString).value
-        searchedEventsArray.push([subject, description, location, beginDate, endDate,  beginTime, endTime, frequency, freqCount])
-    }
-
+    addAllTableElementsToArray();
     searchedEventsArray.splice(index, 1)
-    changeOccurredSoUpdateEventsTable()
+    addAllArrayElementsToTable();
 }
 
 function addBlankEventToTable() {
-    let len = searchedEventsArray.length
-    searchedEventsArray=[]
-
-    for(let i=0;i<len;i++) {
-        let iString = ""+i
-        let subject = document.getElementById("subject"+iString).value
-        let description = document.getElementById("description"+iString).value
-        let location = document.getElementById("location"+iString).value
-        let beginDate = document.getElementById("begin"+iString).value
-        let endDate = document.getElementById("end"+iString).value
-        let beginTime = document.getElementById("beginTime"+iString).value
-        let endTime = document.getElementById("endTime"+iString).value
-        let frequency = document.getElementById("frequency"+iString).value
-        let freqCount = document.getElementById("freqCount"+iString).value
-        searchedEventsArray.push([subject, description, location, beginDate, endDate,  beginTime, endTime, frequency, freqCount])
-    }
-
+    addAllTableElementsToArray()
     searchedEventsArray.push(["", "", "", "", "", "", "", "", ""])
-    changeOccurredSoUpdateEventsTable()
+    addAllArrayElementsToTable()
 }
-
-function changeOccurredSoUpdateEventsTable() {
-    document.getElementById("eventOutput").innerHTML =""
-    for(let i=0; i<searchedEventsArray.length; i++) {
-        let subject = searchedEventsArray[i][0]
-        let description = searchedEventsArray[i][1]
-        let location = searchedEventsArray[i][2]
-        let beginDate = searchedEventsArray[i][3]
-        let endDate = searchedEventsArray[i][4]
-        let beginTime = searchedEventsArray[i][5]
-        let endTime = searchedEventsArray[i][6]
-        let frequency = searchedEventsArray[i][7]
-        let freqCount = searchedEventsArray[i][8]
-        let num = i
-        let onceSelected = ""
-        let dailySelected= ""
-        let weeklySelected= ""
-        let monthlySelected = ""
-        let yearlySelected = ""
-
-        if (frequency==="once") {
-            onceSelected = "selected"
-        } else if (frequency==="DAILY") {
-            dailySelected="selected"
-        } else if (frequency==="WEEKLY"){
-            weeklySelected="selected"
-        } else if (frequency==="MONTHLY") {
-            monthlySelected="selected"
-        } else {
-            yearlySelected="selected"
-        }
-
-        let build = "<tr><td><input type='text' class='form-control' id='subject"+ num +"' value='" +subject +"'></td>" +
-            "<td><input type='text' class='form-control' id='description"+ num +"'value='"+ description +"'></td>" +
-            "<td><input type='text' class='form-control' id='location"+ num +"' value='" + location +"'></td>" +
-            "<td><input type='text' class='form-control' id='begin"+ num +"' value='" + beginDate +"'></td>" +
-            "<td><input type='text' class='form-control' id='end"+ num +"' value='" + endDate +"'></td>" +
-            "<td><input type='time' class='form-control' id='beginTime"+ num +"' value='" + beginTime +"'></td>" +
-            "<td><input type='time' class='form-control' id='endTime"+ num +"' value='" + endTime +"'></td>" +
-            "<td><select name='Frequency' id='frequency"+ num +"' class='form-select' value='"+frequency+"'>" +
-            "                                <option value='once'" + onceSelected + ">One off</option>" +
-            "                                <option value='DAILY'" + dailySelected + ">Daily</option>" +
-            "                                <option value='WEEKLY'" + weeklySelected +" >Weekly</option>" +
-            "                                <option value='MONTHLY'" + monthlySelected + " >Monthly</option>" +
-            "                                <option value='YEARLY'" + yearlySelected + " >Yearly</option>" +
-            "                            </select></td>" +
-            "<td><input type='text' class='form-control' id='freqCount"+ num +"' placeholder='Enter length of time to repeat i.e. 12 weeks' value='"+freqCount+"'</td>" +
-            getRemoveArrayButton(num) +
-            "</tr>"
-
-
-        document.getElementById("eventOutput").innerHTML += build
-    }
-}
-
 
 function createAndUpload() {
     let cal = ics();
-    let len = searchedEventsArray.length
+    if (searchedEventsArray.length!=0) {
+        var uploadtext = document.getElementById("upload").innerHTML;
+        document.getElementById("upload").innerHTML = "Uploading...";
+        var courseTitle = document.getElementById("courseTitle").value;
 
 
-
-    var uploadtext = document.getElementById("upload").innerHTML;
-    document.getElementById("upload").innerHTML = "Uploading...";
-
-    var courseTitle = document.getElementById("courseTitle").value;
-
-
-    for (let i = 0; i < searchedEventsArray.length; i++) {
-        let currEvent = searchedEventsArray[i];
-        let rrule  = "";
-        let beginTime=currEvent[5].replace(":","");
-        let endTime=currEvent[6].replace(":","") ;
-        if (currEvent[7] != "once" && currEvent[7]!="DAILY") {
-            rrule = {freq:currEvent[7], count:currEvent[8]};
+        let length = searchedEventsArray.length
+        searchedEventsArray = []
+        for(let i=0;i<length; i++) {
+            let iString = ""+i
+            let subject = document.getElementById("subject"+iString).value
+            let description = document.getElementById("description"+iString).value
+            let location = document.getElementById("location"+iString).value
+            let beginDate = document.getElementById("begin"+iString).value
+            let endDate = document.getElementById("end"+iString).value
+            let beginTime = document.getElementById("beginTime"+iString).value
+            let endTime = document.getElementById("endTime"+iString).value
+            let frequency = document.getElementById("frequency"+iString).value
+            let freqCount = document.getElementById("freqCount"+iString).value
+            searchedEventsArray.push([subject, description, location, beginDate, endDate,  beginTime, endTime, frequency, freqCount])
         }
-        cal.addEvent(currEvent[0], currEvent[1], currEvent[2], currEvent[3], currEvent[4], beginTime, endTime,rrule);
+        for (let i = 0; i < searchedEventsArray.length; i++) {
+            let currEvent = searchedEventsArray[i];
+            let rrule  = "";
+            let beginTime=currEvent[5].replace(":","");
+            let endTime=currEvent[6].replace(":","") ;
+            if (currEvent[7] != "once" && currEvent[7]!="DAILY"&& currEvent[7]!="YEARLY" ) {
+                rrule = {freq:currEvent[7], count:currEvent[8]};
+            }
+            cal.addEvent(currEvent[0], currEvent[1], currEvent[2], currEvent[3], currEvent[4], beginTime, endTime,rrule);
+        }
+
+        searchedEventsArray=[]
+        clearTable()
+        var file = cal.blobForUpload();
+        var newFile = new File([file], courseTitle+'.ics', {type: 'text/calendar'});
+
+        var storageRef = firebase.storage().ref("images/" + newFile.name);
+        var uploadTask = storageRef.put(newFile);
+        uploadTask.on('state_changed', function (snapshot) {
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+        }, function (error) {
+            console.log(error.message);
+            document.getElementById("upload").innerHTML = "Upload Failed";
+        }, function () {
+            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                console.log('File available at', downloadURL);
+                saveMessage(downloadURL);
+                let buttonsToHide = document.getElementsByClassName("hideUntilFound");
+                for(let i =0; i< buttonsToHide.length;i++) {
+                    buttonsToHide[i].style.display = "none";
+                }
+
+                let tablesToHide = document.getElementsByClassName("output");
+                for(let i =0; i< buttonsToHide.length;i++) {
+                    buttonsToHide[i].style.display = "none";
+                }
+                window.location.reload();
+            });
+        });
+    } else {
+        document.getElementById("upload").innerHTML = "Please add events to the timetable"
+        setTimeout(function () {
+            document.getElementById("upload").innerHTML = "Upload";
+        }, 3000);
     }
 
-    searchedEventsArray=[]
-    var file = cal.blobForUpload();
-    var newFile = new File([file], courseTitle+'.ics', {type: 'text/calendar'});
-
-    var storageRef = firebase.storage().ref("images/" + newFile.name);
-    var uploadTask = storageRef.put(newFile);
-    uploadTask.on('state_changed', function (snapshot) {
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-    }, function (error) {
-        console.log(error.message);
-        document.getElementById("upload").innerHTML = "Upload Failed";
-    }, function () {
-        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-            console.log('File available at', downloadURL);
-            saveMessage(downloadURL);
-            searchedEventsArray=[];
-            changeOccurredSoUpdateEventsTable();
-            document.getElementById("upload").innerHTML = "Upload";
-            return false;
-        });
-    });
 }
 
 function saveMessage(downloadURL) {
@@ -328,8 +266,24 @@ function saveMessage(downloadURL) {
         college: nameOfCollege
     });
     document.getElementById("upload").innerHTML = "Upload Successful";
-    //Make file input empty
-    return false;
+    document.getElementById("searchOutput").innerHTML = "";
+    setTimeout(function () {
+        document.getElementById("upload").innerHTML = "Upload";
+    }, 1000);
+    return false
+}
+
+function getCollegeString(college) {
+    switch (college) {
+        case "arts":
+            return "College of Arts, Social Sciences & Celtic Studies";
+        case "business":
+            return "College of Business, Public Policy, & Law"
+        case "science":
+            return "College of Science & Engineering"
+        case "medicine":
+            return "College of Medicine, Nursing, & Health Sciences"
+    }
 }
 
 function getSchoolString(school) {
@@ -411,5 +365,90 @@ function getSchoolFromSchoolString(string) {
             return "health";
         default:
             return string;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    let buttonsToHide = document.getElementsByClassName("hideUntilFound");
+    for(let i =0; i< buttonsToHide.length;i++) {
+        buttonsToHide[i].style.display = "none";
+    }
+});
+
+function clearTable() {
+    document.getElementById("eventOutput").innerHTML =""
+}
+
+function addAllTableElementsToArray() {
+    let length = searchedEventsArray.length
+    searchedEventsArray = []
+    for(let i=0;i<length; i++) {
+        let iString = ""+i
+        let subject = document.getElementById("subject"+iString).value
+        let description = document.getElementById("description"+iString).value
+        let location = document.getElementById("location"+iString).value
+        let beginDate = document.getElementById("begin"+iString).value
+        let endDate = document.getElementById("end"+iString).value
+        let beginTime = document.getElementById("beginTime"+iString).value
+        let endTime = document.getElementById("endTime"+iString).value
+        let frequency = document.getElementById("frequency"+iString).value
+        let freqCount = document.getElementById("freqCount"+iString).value
+        searchedEventsArray.push([subject, description, location, beginDate, endDate,  beginTime, endTime, frequency, freqCount])
+    }
+
+}
+
+function  addAllArrayElementsToTable() {
+    document.getElementById("eventOutput").innerHTML =""
+    for(let i=0; i<searchedEventsArray.length; i++) {
+        let subject = searchedEventsArray[i][0]
+        let description = searchedEventsArray[i][1]
+        let location = searchedEventsArray[i][2]
+        let beginDate = searchedEventsArray[i][3]
+        let endDate = searchedEventsArray[i][4]
+        let beginTime = searchedEventsArray[i][5]
+        let endTime = searchedEventsArray[i][6]
+        let frequency = searchedEventsArray[i][7]
+        let freqCount = searchedEventsArray[i][8]
+        let num = i
+        let onceSelected = ""
+        let dailySelected = ""
+        let weeklySelected = ""
+        let monthlySelected = ""
+        let yearlySelected = ""
+
+        if (frequency === "once") {
+            onceSelected = " selected"
+        } else if (frequency === "DAILY") {
+            dailySelected = " selected"
+        } else if (frequency === "WEEKLY") {
+            weeklySelected = " selected"
+        } else if (frequency === "MONTHLY") {
+            monthlySelected = " selected"
+        } else {
+            yearlySelected = " selected"
+        }
+
+        let build = "<tr>" +
+            "<td><input type='text' class='form-control' id='subject" + num + "' value='" + subject + "'></td>" +
+            "<td><input type='text' class='form-control' id='description" + num + "'value='" + description + "'></td>" +
+            "<td><input type='text' class='form-control' id='location" + num + "' value='" + location + "'></td>" +
+            "<td><input type='text' class='form-control' id='begin" + num + "' value='" + beginDate + "'></td>" +
+            "<td><input type='text' class='form-control' id='end" + num + "' value='" + endDate + "'></td>" +
+            "<td><input type='time' class='form-control' id='beginTime" + num + "' value='" + beginTime + "'></td>" +
+            "<td><input type='time' class='form-control' id='endTime" + num + "' value='" + endTime + "'></td>" +
+            "<td><select name='Frequency' id='frequency" + num + "' class='form-select' value='" + frequency + "'>" +
+            "                                <option value='once'" + onceSelected + ">One off</option>" +
+            "                                <option value='DAILY'" + dailySelected + ">Daily</option>" +
+            "                                <option value='WEEKLY'" + weeklySelected + " >Weekly</option>" +
+            "                                <option value='MONTHLY'" + monthlySelected + " >Monthly</option>" +
+            "                                <option value='YEARLY'" + yearlySelected + " >Yearly</option>" +
+            "                            </select></td>" +
+            "<td><input type='text' class='form-control' id='freqCount" + num + "' placeholder='Enter length of time to repeat i.e. 12 weeks' value='" + freqCount + "'</td>" +
+            getRemoveArrayButton(num) +
+            "</tr>"
+
+
+        document.getElementById("events").innerHTML += build
     }
 }
